@@ -1,8 +1,9 @@
 ﻿import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Star, Package, Wrench, Sprout } from "lucide-react";
+import { ShoppingCart, Star, Package, Wrench, Sprout, CreditCard } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useRazorpay } from "@/hooks/useRazorpay";
 
 interface Product {
   id: string;
@@ -24,6 +25,8 @@ const ShopSection = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [loading, setLoading] = useState(true);
+  const [cart, setCart] = useState<string[]>([]);
+  const { initiatePayment } = useRazorpay();
 
   const categories: Category[] = [
     { name: "All", icon: <Package className="w-4 h-4" />, count: 12 },
@@ -154,6 +157,28 @@ const ShopSection = () => {
     ? products 
     : products.filter(product => product.category === selectedCategory);
 
+  const handleBuyNow = async (product: Product) => {
+    try {
+      await initiatePayment({
+        amount: product.price,
+        productName: product.name,
+        productId: product.id,
+        customerName: "Customer",
+        customerEmail: "customer@example.com",
+        customerPhone: "9999999999"
+      });
+    } catch (error) {
+      console.error('Payment initiation failed:', error);
+      alert('Failed to initiate payment. Please try again.');
+    }
+  };
+
+  const handleAddToCart = (productId: string) => {
+    setCart(prev => [...prev, productId]);
+    alert('Product added to cart!');
+    console.log('Added to cart:', productId);
+  };
+
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -226,10 +251,23 @@ const ShopSection = () => {
                     <p className="text-xl font-bold text-gray-900">₹{product.price.toLocaleString("en-IN")}</p>
                   </div>
                   
-                  <Button className="w-full">
-                    <ShoppingCart className="w-4 h-4 mr-2" />
-                    Add to Cart
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={() => handleAddToCart(product.id)}
+                    >
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      Add to Cart
+                    </Button>
+                    <Button 
+                      onClick={() => handleBuyNow(product)}
+                      className="flex-1 bg-green-600 hover:bg-green-700"
+                    >
+                      <CreditCard className="w-4 h-4 mr-2" />
+                      Buy Now
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
