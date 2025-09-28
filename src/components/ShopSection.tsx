@@ -180,7 +180,7 @@ const ShopSection = () => {
   };
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section id="shop" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -248,7 +248,7 @@ const ShopSection = () => {
                       <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                       <span className="text-sm font-medium">{product.rating}</span>
                     </div>
-                    <p className="text-xl font-bold text-gray-900">₹{product.price.toLocaleString("en-IN")}</p>
+                    <p className="text-xl font-bold text-foreground">₹{product.price.toLocaleString("en-IN")}</p>
                   </div>
                   
                   <div className="flex gap-2">

@@ -16,9 +16,6 @@ export const API_CONFIG = {
   // Soil & Crop recommendation
   SOIL_CROP: 'https://web-production-f233.up.railway.app/api',
   
-  // Plant detection/classification (updated endpoint to /predict)
-  PLANT_DETECT: '/predict',
-  
   // AI Chatbot - Updated to use direct URL with specific endpoint
   CHATBOT: 'https://agri-bot-main.onrender.com/chat/simple',
   

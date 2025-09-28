@@ -24,7 +24,7 @@ const Navbar = () => {
     { name: 'Maps', href: '#maps', icon: MapPin },
     { name: 'Shop', href: '#shop', icon: ShoppingBag },
     { name: 'Soil & Crops', href: '#soil', icon: Sprout },
-    { name: 'Plant ID', href: '#plant', icon: Camera },
+    { name: 'Plant ID', href: '#plant-classification', icon: Camera },
     { name: 'Calendar', href: '#calendar', icon: Calendar },
     { name: 'AI Chat', href: '#chat', icon: MessageCircle },
   ];
