@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import WeatherForecast from "@/components/WeatherForecast";
-import GoogleMapsFixed from "@/components/GoogleMapsFixed";
+import RealGoogleMaps from "@/components/RealGoogleMaps";
 import ShopSection from "@/components/ShopSection";
 import SoilCropSection from "@/components/SoilCropSection";
 import PlantClassification from "@/components/PlantClassification";
@@ -15,7 +15,7 @@ const Index = () => {
       <Navbar />
       <HeroSection />
       <WeatherForecast />
-      <GoogleMapsFixed />
+      <RealGoogleMaps />
       <ShopSection />
       <SoilCropSection />
       <PlantClassification />

@@ -1,14 +1,46 @@
 {
-  "name": "vite_react_shadcn_ts",
-  "private": true,
-  "version": "0.0.0",
+  "name": "agrovision-growsmart",
+  "version": "1.0.0",
+  "description": "AI-powered smart farming platform with real-time monitoring and recommendations",
+  "homepage": "https://github.com/SHASHWAT0202/agrovision-growsmart-main",
+  "bugs": {
+    "url": "https://github.com/SHASHWAT0202/agrovision-growsmart-main/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SHASHWAT0202/agrovision-growsmart-main.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "SHASHWAT0202",
+    "url": "https://github.com/SHASHWAT0202"
+  },
+  "keywords": [
+    "farming",
+    "agriculture",
+    "ai",
+    "smart-farming",
+    "react",
+    "typescript",
+    "google-maps",
+    "weather",
+    "crop-monitoring"
+  ],
+  "private": false,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "lint:fix": "eslint . --fix",
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist",
+    "deploy:vercel": "vercel --prod",
+    "deploy:netlify": "npm run build && netlify deploy --prod --dir=dist",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "analyze": "npm run build -- --analyze"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

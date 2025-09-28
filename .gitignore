@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# Environment Variables (IMPORTANT: Keep sensitive data secure)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +29,34 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Additional security and development files
+# Coverage reports
+coverage/
+.nyc_output/
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# Optional npm cache
+.npm
+
+# ESLint cache
+.eslintcache
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.backup
+
+# OS files
+Thumbs.db
+ehthumbs.db
+.Spotlight-V100
+.Trashes
+
+# Lock files (uncomment the one you DON'T use)
+package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
