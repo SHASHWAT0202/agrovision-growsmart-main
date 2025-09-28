@@ -1,9 +1,53 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Navigation, Layers } from "lucide-react";
+import { MapPin, Navigation, Layers, Locate, Satellite } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { API_CONFIG } from "@/config/api";
+
+// Extend Window interface to include google
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
+interface MapMarker {
+  id: string;
+  lat: number;
+  lng: number;
+  title: string;
+  type: "farm" | "soil" | "crop";
+  data: {
+    moisture?: number;
+    temperature?: number;
+    cropType?: string;
+    status?: string;
+  };
+}
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { MapPin, Navigation, Layers, Locate, Satellite, AlertCircle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { API_CONFIG } from "@/config/api";
+
+// Extend Window interface to include google
+declare global {
+  interface Window {
+    google: {
+      maps: {
+        Map: any;
+        Marker: any;
+        InfoWindow: any;
+        LatLng: any;
+        MapTypeId: any;
+        event: any;
+      };
+    };
+  }
+}
 
 interface MapMarker {
   id: string;
@@ -21,34 +65,48 @@ interface MapMarker {
 
 const GoogleMaps = () => {
   const [selectedMarker, setSelectedMarker] = useState<MapMarker | null>(null);
+  const [mapType, setMapType] = useState<'roadmap' | 'satellite'>('roadmap');
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [locationError, setLocationError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
-  const mapInstanceRef = useRef<google.maps.Map | null>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const userMarkerRef = useRef<any>(null);
+  const markersRef = useRef<any[]>([]);
   
-  // Mock farm data
+  // Mock farm data with more realistic coordinates
   const markers: MapMarker[] = [
     {
       id: "1",
-      lat: 40.7128,
-      lng: -74.0060,
-      title: "Main Farm Area",
+      lat: 28.6139,
+      lng: 77.2090,
+      title: "Main Farm Area - Delhi",
       type: "farm",
       data: { status: "Active" }
     },
     {
       id: "2", 
-      lat: 40.7140,
-      lng: -74.0050,
+      lat: 28.6189,
+      lng: 77.2140,
       title: "Soil Sensor A1",
       type: "soil",
       data: { moisture: 68, temperature: 24 }
     },
     {
       id: "3",
-      lat: 40.7120,
-      lng: -74.0070,
-      title: "Crop Field B",
+      lat: 28.6089,
+      lng: 77.2040,
+      title: "Crop Field B - Wheat",
       type: "crop",
-      data: { cropType: "Corn", status: "Growing" }
+      data: { cropType: "Wheat", status: "Growing" }
+    },
+    {
+      id: "4",
+      lat: 28.6239,
+      lng: 77.2190,
+      title: "Irrigation System C",
+      type: "soil",
+      data: { moisture: 72, temperature: 26 }
     }
   ];
 
@@ -70,6 +128,82 @@ const GoogleMaps = () => {
     }
   };
 
+  // Get user's current location
+  const getCurrentLocation = () => {
+    setLocationError('');
+    
+    if (!navigator.geolocation) {
+      setLocationError('Geolocation is not supported by this browser.');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const location = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        setUserLocation(location);
+        
+        // If map is already loaded, update it
+        if (mapInstanceRef.current && window.google) {
+          mapInstanceRef.current.setCenter(location);
+          mapInstanceRef.current.setZoom(15);
+          
+          // Add or update user location marker
+          if (userMarkerRef.current) {
+            userMarkerRef.current.setMap(null);
+          }
+          
+          userMarkerRef.current = new window.google.maps.Marker({
+            position: location,
+            map: mapInstanceRef.current,
+            title: 'Your Location',
+            icon: {
+              url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="8" fill="#3B82F6" stroke="#ffffff" stroke-width="2"/>
+                  <circle cx="12" cy="12" r="3" fill="#ffffff"/>
+                </svg>
+              `),
+              scaledSize: new window.google.maps.Size(24, 24)
+            }
+          });
+        }
+      },
+      (error) => {
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            setLocationError('Location access denied by user.');
+            break;
+          case error.POSITION_UNAVAILABLE:
+            setLocationError('Location information is unavailable.');
+            break;
+          case error.TIMEOUT:
+            setLocationError('Location request timed out.');
+            break;
+          default:
+            setLocationError('An unknown error occurred.');
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
+  };
+
+  // Toggle map type between roadmap and satellite
+  const toggleMapType = () => {
+    const newMapType = mapType === 'roadmap' ? 'satellite' : 'roadmap';
+    setMapType(newMapType);
+    
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.setMapTypeId(newMapType);
+    }
+  };
+
   // Load Google Maps script and initialize map
   useEffect(() => {
     if (!mapContainerRef.current) return;
@@ -80,9 +214,8 @@ const GoogleMaps = () => {
         'script[src^="https://maps.googleapis.com/maps/api/js"]'
       );
       if (existing) {
-        // If script tag exists, wait until google.maps is available
         return new Promise<void>((resolve, reject) => {
-          if ((window as any).google?.maps) {
+          if (window.google?.maps) {
             resolve();
             return;
           }
@@ -106,7 +239,7 @@ const GoogleMaps = () => {
     const waitForGoogle = () => new Promise<void>((resolve, reject) => {
       const start = Date.now();
       const check = () => {
-        if ((window as any).google?.maps) {
+        if (window.google?.maps) {
           resolve();
         } else if (Date.now() - start > 15000) {
           reject(new Error("Google Maps not available"));
@@ -120,30 +253,86 @@ const GoogleMaps = () => {
     loadScript()
       .then(() => waitForGoogle())
       .then(() => {
-        // Center around first marker
-        const center = { lat: markers[0].lat, lng: markers[0].lng };
-        const map = new google.maps.Map(mapContainerRef.current as HTMLDivElement, {
+        // Use user location if available, otherwise use first marker
+        const center = userLocation || { lat: markers[0].lat, lng: markers[0].lng };
+        
+        const map = new window.google.maps.Map(mapContainerRef.current as HTMLDivElement, {
           center,
-          zoom: 14,
+          zoom: userLocation ? 15 : 12,
+          mapTypeId: mapType,
           mapTypeControl: false,
-          streetViewControl: false,
-          fullscreenControl: false,
+          streetViewControl: true,
+          fullscreenControl: true,
+          zoomControl: true,
+          gestureHandling: 'cooperative',
+          styles: [
+            {
+              featureType: 'poi',
+              elementType: 'labels',
+              stylers: [{ visibility: 'on' }]
+            }
+          ]
         });
         mapInstanceRef.current = map;
 
-        // Add markers
+        // Clear existing markers
+        markersRef.current.forEach(marker => marker.setMap(null));
+        markersRef.current = [];
+
+        // Add farm markers
         markers.forEach((m) => {
-          const marker = new google.maps.Marker({
+          const marker = new window.google.maps.Marker({
             position: { lat: m.lat, lng: m.lng },
             map,
             title: m.title,
+            icon: {
+              url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="16" cy="16" r="12" fill="${m.type === 'farm' ? '#22c55e' : m.type === 'soil' ? '#3b82f6' : '#f59e0b'}" stroke="#ffffff" stroke-width="2"/>
+                  <text x="16" y="20" text-anchor="middle" font-size="14" fill="#ffffff">${getMarkerIcon(m.type)}</text>
+                </svg>
+              `),
+              scaledSize: new window.google.maps.Size(32, 32)
+            }
           });
-          marker.addListener("click", () => setSelectedMarker(m));
+          
+          marker.addListener("click", () => {
+            setSelectedMarker(m);
+            map.panTo({ lat: m.lat, lng: m.lng });
+          });
+          
+          markersRef.current.push(marker);
         });
+
+        // Add user location marker if available
+        if (userLocation) {
+          userMarkerRef.current = new window.google.maps.Marker({
+            position: userLocation,
+            map,
+            title: 'Your Location',
+            icon: {
+              url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="8" fill="#3B82F6" stroke="#ffffff" stroke-width="2"/>
+                  <circle cx="12" cy="12" r="3" fill="#ffffff"/>
+                </svg>
+              `),
+              scaledSize: new window.google.maps.Size(24, 24)
+            }
+          });
+        }
+
+        setIsLoading(false);
       })
       .catch(() => {
-        // If maps fails to load, keep the UI without breaking
+        setIsLoading(false);
+        setLocationError('Failed to load Google Maps. Please check your internet connection.');
       });
+  }, [userLocation, mapType]);
+
+  // Get current location on component mount
+  useEffect(() => {
+    getCurrentLocation();
   }, []);
 
   return (
@@ -165,19 +354,52 @@ const GoogleMaps = () => {
           <div className="lg:col-span-2">
             <Card className="bg-gradient-card shadow-card border-0 animate-slide-in">
               <CardHeader>
-                <CardTitle className="flex items-center justify-between">
+                <CardTitle className="flex items-center justify-between flex-wrap gap-2">
                   <span className="flex items-center gap-2">
                     <Navigation className="h-5 w-5 text-primary" />
                     Farm Location Map
                   </span>
-                  <Button variant="outline" size="sm">
-                    <Layers className="w-4 h-4 mr-2" />
-                    Satellite View
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={toggleMapType}
+                      className="flex items-center gap-2"
+                    >
+                      {mapType === 'roadmap' ? <Satellite className="w-4 h-4" /> : <Layers className="w-4 h-4" />}
+                      {mapType === 'roadmap' ? 'Satellite' : 'Map'}
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={getCurrentLocation}
+                      className="flex items-center gap-2"
+                    >
+                      <Locate className="w-4 h-4" />
+                      My Location
+                    </Button>
+                  </div>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div ref={mapContainerRef} className="relative h-96 rounded-lg overflow-hidden" />
+                {isLoading && (
+                  <div className="flex items-center justify-center h-96 bg-gray-100 rounded-lg">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                      <p className="text-gray-600">Loading Map...</p>
+                    </div>
+                  </div>
+                )}
+                {locationError && (
+                  <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 text-yellow-600" />
+                    <span className="text-yellow-800 text-sm">{locationError}</span>
+                  </div>
+                )}
+                <div 
+                  ref={mapContainerRef} 
+                  className={`relative h-96 rounded-lg overflow-hidden ${isLoading ? 'hidden' : 'block'}`} 
+                />
               </CardContent>
             </Card>
           </div>

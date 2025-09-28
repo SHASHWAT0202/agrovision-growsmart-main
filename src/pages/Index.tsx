@@ -1,10 +1,11 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import WeatherForecast from "@/components/WeatherForecast";
-import GoogleMaps from "@/components/GoogleMaps";
+import GoogleMapsFixed from "@/components/GoogleMapsFixed";
 import ShopSection from "@/components/ShopSection";
 import SoilCropSection from "@/components/SoilCropSection";
 import PlantClassification from "@/components/PlantClassification";
+import FarmerCalendar from "@/components/FarmerCalendar";
 import AIChat from "@/components/AIChat";
 import Footer from "@/components/Footer";
 
@@ -14,10 +15,11 @@ const Index = () => {
       <Navbar />
       <HeroSection />
       <WeatherForecast />
-      <GoogleMaps />
+      <GoogleMapsFixed />
       <ShopSection />
       <SoilCropSection />
       <PlantClassification />
+      <FarmerCalendar />
       <AIChat />
       <Footer />
     </div>

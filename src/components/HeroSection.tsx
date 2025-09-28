@@ -26,10 +26,10 @@ const HeroSection = () => {
             
             {/* Main Heading */}
             <div className="space-y-4">
-              <h1 className="text-5xl lg:text-7xl font-bold bg-gradient-primary bg-clip-text text-transparent leading-tight">
+              <h1 className="text-5xl lg:text-7xl font-bold text-transparent bg-gradient-to-r from-green-600 via-green-500 to-teal-500 bg-clip-text leading-tight drop-shadow-lg">
                 AgroVision
               </h1>
-              <p className="text-xl lg:text-2xl text-muted-foreground max-w-2xl leading-relaxed">
+              <p className="text-xl lg:text-2xl text-gray-700 dark:text-gray-300 max-w-2xl leading-relaxed font-medium">
                 Revolutionize your farming with AI-driven insights, real-time monitoring, 
                 and smart recommendations for maximum yield and sustainability.
               </p>
@@ -37,11 +37,27 @@ const HeroSection = () => {
             
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="hero" size="lg" className="group animate-glow">
+              <Button 
+                variant="hero" 
+                size="lg" 
+                className="group animate-glow"
+                onClick={() => {
+                  const element = document.querySelector('#weather');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+              >
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
-              <Button variant="outline" size="lg">
+              <Button 
+                variant="outline" 
+                size="lg"
+                onClick={() => {
+                  window.open('https://www.youtube.com/watch?v=5fgNlH_eiYI', '_blank');
+                }}
+              >
                 Watch Demo
               </Button>
             </div>

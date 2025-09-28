@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Leaf, Menu, Sun, Moon, MapPin, Cloud, ShoppingBag, Sprout, Camera, MessageCircle } from "lucide-react";
+import { Leaf, Menu, Sun, Moon, MapPin, Cloud, ShoppingBag, Sprout, Camera, MessageCircle, Calendar } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const Navbar = () => {
@@ -25,6 +25,7 @@ const Navbar = () => {
     { name: 'Shop', href: '#shop', icon: ShoppingBag },
     { name: 'Soil & Crops', href: '#soil', icon: Sprout },
     { name: 'Plant ID', href: '#plant', icon: Camera },
+    { name: 'Calendar', href: '#calendar', icon: Calendar },
     { name: 'AI Chat', href: '#chat', icon: MessageCircle },
   ];
 
