@@ -180,18 +180,24 @@ const ShopSection = () => {
   };
 
   return (
-    <section id="shop" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Agricultural Shop
+    <section id="shop" className="py-24 bg-gradient-to-br from-muted/30 via-background to-muted/20 relative overflow-hidden">
+      {/* Background Decoration */}
+      <div className="absolute top-20 right-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-20 left-10 w-80 h-80 bg-secondary/5 rounded-full blur-3xl"></div>
+      
+      <div className="container mx-auto px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-16 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/30 rounded-full mb-6">
+            <ShoppingCart className="h-5 w-5 text-primary" />
+            <span className="text-sm font-semibold text-primary">Premium Products</span>
+          </div>
+          <h2 className="text-4xl lg:text-5xl font-black text-foreground mb-6">
+            Smart Farming <span className="gradient-text">Marketplace</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Browse our comprehensive collection of premium seeds, fertilizers, and farming tools.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            Premium quality seeds, fertilizers, and modern farming equipment delivered to your doorstep
           </p>
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        </div>        <div className="flex flex-wrap justify-center gap-4 mb-12">
           {categories.map((category) => (
             <Button
               key={category.name}
@@ -213,59 +219,62 @@ const ShopSection = () => {
             {Array(12).fill(0).map((_, i) => (
               <Card key={i} className="h-96">
                 <CardHeader className="space-y-0 pb-2">
-                  <div className="w-full h-48 bg-gray-200 rounded-lg animate-pulse"></div>
+                  <div className="w-full h-48 bg-muted rounded-lg animate-pulse"></div>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
-                  <div className="h-3 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+                  <div className="h-4 bg-muted rounded animate-pulse"></div>
+                  <div className="h-3 bg-muted rounded w-3/4 animate-pulse"></div>
+                  <div className="h-4 bg-muted rounded w-1/2 animate-pulse"></div>
                 </CardContent>
               </Card>
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProducts.map((product) => (
-              <Card key={product.id} className="group hover:shadow-lg transition-shadow">
-                <CardHeader className="space-y-0 pb-2">
-                  <div className="relative overflow-hidden rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProducts.map((product, index) => (
+              <Card key={product.id} className="group card-hover shadow-elegant border-border/50 overflow-hidden animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                <CardHeader className="space-y-0 pb-2 p-0">
+                  <div className="relative overflow-hidden">
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform"
+                      className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <Badge className="absolute top-2 right-2" variant="secondary">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <Badge className="absolute top-3 right-3 backdrop-blur-sm bg-primary/90 text-white font-semibold">
                       {product.category}
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <CardTitle className="text-lg mb-2">{product.name}</CardTitle>
-                  <p className="text-gray-600 text-sm mb-3">{product.description}</p>
+                <CardContent className="p-5">
+                  <CardTitle className="text-lg mb-2 group-hover:text-primary transition-colors">{product.name}</CardTitle>
+                  <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{product.description}</p>
                   
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-1">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-1 px-3 py-1 bg-yellow-50 dark:bg-yellow-950/30 rounded-full">
                       <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-medium">{product.rating}</span>
+                      <span className="text-sm font-bold text-foreground">{product.rating}</span>
                     </div>
-                    <p className="text-xl font-bold text-foreground">₹{product.price.toLocaleString("en-IN")}</p>
+                    <p className="text-2xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      ₹{product.price.toLocaleString("en-IN")}
+                    </p>
                   </div>
                   
                   <div className="flex gap-2">
                     <Button 
                       variant="outline" 
-                      className="flex-1"
+                      className="flex-1 border-2 hover:border-primary hover:bg-primary/5"
                       onClick={() => handleAddToCart(product.id)}
                     >
                       <ShoppingCart className="w-4 h-4 mr-2" />
-                      Add to Cart
+                      Cart
                     </Button>
                     <Button 
+                      className="flex-1 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg"
                       onClick={() => handleBuyNow(product)}
-                      className="flex-1 bg-green-600 hover:bg-green-700"
                     >
                       <CreditCard className="w-4 h-4 mr-2" />
-                      Buy Now
+                      Buy
                     </Button>
                   </div>
                 </CardContent>
@@ -277,8 +286,8 @@ const ShopSection = () => {
         {filteredProducts.length === 0 && !loading && (
           <div className="text-center py-12">
             <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No products found</h3>
-            <p className="text-gray-600">Try selecting a different category to browse our products.</p>
+            <h3 className="text-xl font-semibold text-foreground mb-2">No products found</h3>
+            <p className="text-muted-foreground">Try selecting a different category to browse our products.</p>
           </div>
         )}
       </div>

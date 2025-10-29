@@ -41,54 +41,55 @@ const Navbar = () => {
   }
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled 
-        ? 'bg-background/95 backdrop-blur-md shadow-card border-b border-border' 
+        ? 'bg-background/90 backdrop-blur-xl shadow-elegant border-b border-border/50' 
         : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-18">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-gradient-primary rounded-lg shadow-glow">
-              <Leaf className="h-6 w-6 text-white" />
+          <div className="flex items-center space-x-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <div className="p-2.5 bg-gradient-to-br from-primary to-secondary rounded-xl shadow-elegant group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+              <Leaf className="h-6 w-6 text-white animate-float" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">AgroVision</h1>
-              <Badge variant="outline" className="text-xs px-2 py-0">
-                Smart Farming AI
+              <h1 className="text-xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">AgroVision</h1>
+              <Badge variant="outline" className="text-[10px] px-2 py-0 border-primary/30 text-primary font-semibold">
+                AI Farming
               </Badge>
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-2">
             {navigation.map((item) => {
               const IconComponent = item.icon;
               return (
                 <button
                   key={item.name}
                   onClick={() => scrollToSection(item.href)}
-                  className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors duration-200 group"
+                  className="flex items-center space-x-2 px-4 py-2 rounded-xl text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 group relative overflow-hidden"
                 >
-                  <IconComponent className="h-4 w-4 group-hover:scale-110 transition-transform" />
-                  <span className="text-sm font-medium">{item.name}</span>
+                  <IconComponent className="h-4 w-4 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" />
+                  <span className="text-sm font-semibold">{item.name}</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
                 </button>
               );
             })}
           </div>
 
           {/* Theme Toggle & Mobile Menu */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             {/* Theme Toggle */}
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className="relative hover:bg-muted"
+              className="relative hover:bg-primary/10 hover:scale-110 transition-all duration-300 rounded-xl"
             >
-              <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-amber-500" />
+              <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-blue-500" />
               <span className="sr-only">Toggle theme</span>
             </Button>
 

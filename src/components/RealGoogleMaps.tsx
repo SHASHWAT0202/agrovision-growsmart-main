@@ -101,7 +101,7 @@ const RealGoogleMaps = () => {
       case "farm": return "bg-green-100 text-green-700 border-green-300";
       case "soil": return "bg-blue-100 text-blue-700 border-blue-300";
       case "crop": return "bg-yellow-100 text-yellow-700 border-yellow-300";
-      default: return "bg-gray-100 text-gray-700 border-gray-300";
+      default: return "bg-muted text-foreground border";
     }
   };
 
@@ -364,14 +364,22 @@ const RealGoogleMaps = () => {
   };
 
   return (
-    <section id="maps" className="py-20 bg-background">
-      <div className="container mx-auto px-6 lg:px-8">
-        <div className="text-center mb-12 animate-fade-in">
-          <Badge variant="outline" className="mb-4">
-            <MapPin className="w-4 h-4 mr-2" />
-            Farm Location
+    <section id="maps" className="py-24 bg-gradient-to-br from-emerald-50/50 via-background to-green-50/50 dark:from-emerald-950/20 dark:via-background dark:to-green-950/20 relative overflow-hidden">
+      {/* Background Decoration */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-400/10 rounded-full blur-3xl animate-float"></div>
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-green-400/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+
+      <div className="container mx-auto px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-16 animate-fade-in">
+          <Badge variant="outline" className="mb-4 px-4 py-2 border-emerald-400/30 bg-emerald-50/50 dark:bg-emerald-950/30">
+            <MapPin className="w-4 h-4 mr-2 text-emerald-600 dark:text-emerald-400" />
+            <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Farm Location</span>
           </Badge>
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">Interactive Farm Map</h2>
+          <h2 className="text-4xl lg:text-5xl font-black mb-4">
+            <span className="gradient-text bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 dark:from-emerald-400 dark:via-green-400 dark:to-teal-400">
+              Interactive Farm Map
+            </span>
+          </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Explore your farm locations with real-time Google Maps integration. View satellite imagery, 
             street maps, and get detailed insights about soil conditions and crop status.
@@ -430,8 +438,8 @@ const RealGoogleMaps = () => {
                   <div className="flex items-center justify-center h-96 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg border-2 border-gray-200">
                     <div className="text-center">
                       <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto mb-4"></div>
-                      <p className="text-gray-600 font-medium">Loading Google Maps...</p>
-                      <p className="text-gray-500 text-sm">Connecting to satellite imagery</p>
+                      <p className="text-muted-foreground font-medium">Loading Google Maps...</p>
+                      <p className="text-muted-foreground/70 text-sm">Connecting to satellite imagery</p>
                     </div>
                   </div>
                 )}
@@ -464,7 +472,7 @@ const RealGoogleMaps = () => {
                 
                 <div 
                   ref={mapContainerRef} 
-                  className="w-full h-96 rounded-lg border-2 border-gray-200 bg-gray-100"
+                  className="w-full h-96 rounded-lg border-2 border-border bg-muted"
                   style={{ 
                     minHeight: '400px',
                     display: isLoading ? 'none' : 'block'
@@ -485,34 +493,34 @@ const RealGoogleMaps = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                <div className="flex items-center gap-3 p-2 hover:bg-accent rounded-lg transition-colors">
                   <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-sm"></div>
                   <div>
                     <span className="text-sm font-medium">Farm Buildings</span>
-                    <p className="text-xs text-gray-500">Main facility locations</p>
+                    <p className="text-xs text-muted-foreground">Main facility locations</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                <div className="flex items-center gap-3 p-2 hover:bg-accent rounded-lg transition-colors">
                   <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-sm"></div>
                   <div>
                     <span className="text-sm font-medium">Smart Sensors</span>
-                    <p className="text-xs text-gray-500">IoT monitoring devices</p>
+                    <p className="text-xs text-muted-foreground">IoT monitoring devices</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                <div className="flex items-center gap-3 p-2 hover:bg-accent rounded-lg transition-colors">
                   <div className="w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-sm"></div>
                   <div>
                     <span className="text-sm font-medium">Crop Fields</span>
-                    <p className="text-xs text-gray-500">Active growing areas</p>
+                    <p className="text-xs text-muted-foreground">Active growing areas</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                <div className="flex items-center gap-3 p-2 hover:bg-accent rounded-lg transition-colors">
                   <div className="w-4 h-4 flex items-center justify-center">
                     🏠
                   </div>
                   <div>
                     <span className="text-sm font-medium">Your Location</span>
-                    <p className="text-xs text-gray-500">Current GPS position</p>
+                    <p className="text-xs text-muted-foreground">Current GPS position</p>
                   </div>
                 </div>
               </CardContent>
@@ -573,7 +581,7 @@ const RealGoogleMaps = () => {
                     )}
                     
                     {selectedMarker.data.status && (
-                      <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
+                      <div className="flex justify-between items-center p-2 bg-muted rounded-lg">
                         <span className="text-sm font-medium flex items-center gap-2">
                           ⚡ Status
                         </span>
@@ -585,7 +593,7 @@ const RealGoogleMaps = () => {
                   </div>
 
                   <div className="pt-2 border-t border-gray-100">
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">
                       Last updated: {new Date().toLocaleTimeString()}
                     </p>
                   </div>
@@ -610,15 +618,15 @@ const RealGoogleMaps = () => {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Active Sensors</span>
+                  <span className="text-sm text-muted-foreground">Active Sensors</span>
                   <span className="text-lg font-bold text-blue-600">{markers.filter(m => m.type === 'soil').length}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Crop Fields</span>
+                  <span className="text-sm text-muted-foreground">Crop Fields</span>
                   <span className="text-lg font-bold text-yellow-600">{markers.filter(m => m.type === 'crop').length}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Farm Buildings</span>
+                  <span className="text-sm text-muted-foreground">Farm Buildings</span>
                   <span className="text-lg font-bold text-green-600">{markers.filter(m => m.type === 'farm').length}</span>
                 </div>
               </CardContent>

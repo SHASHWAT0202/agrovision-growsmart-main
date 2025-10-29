@@ -103,8 +103,8 @@ const seasonalData = {
     name: 'Winter',
     months: ['December', 'January', 'February'],
     icon: Snowflake,
-    color: 'bg-gray-100 border-gray-300',
-    textColor: 'text-gray-700',
+    color: 'bg-card border-border',
+    textColor: 'text-foreground',
     crops: {
       vegetables: ['Cabbage', 'Cauliflower', 'Broccoli', 'Peas', 'Radish', 'Turnip'],
       grains: ['Winter Wheat', 'Rye', 'Chickpea'],
@@ -194,13 +194,22 @@ const FarmerCalendar: React.FC = () => {
   const currentRegionData = regionalAdaptations[selectedRegion as keyof typeof regionalAdaptations];
 
   return (
-    <div id="calendar" className="max-w-7xl mx-auto px-4 py-16 bg-gradient-to-br from-green-50 to-blue-50">
-      <div className="text-center mb-12">
-        <div className="flex items-center justify-center mb-4">
-          <Calendar className="w-8 h-8 text-green-600 mr-3" />
-          <h2 className="text-4xl font-bold text-gray-800">Farmer's Calendar</h2>
-        </div>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+    <div id="calendar" className="max-w-7xl mx-auto px-4 py-24 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-green-950/20 dark:via-emerald-950/20 dark:to-teal-950/20 relative overflow-hidden">
+      {/* Background Decoration */}
+      <div className="absolute top-20 right-10 w-80 h-80 bg-green-400/10 rounded-full blur-3xl animate-float"></div>
+      <div className="absolute bottom-20 left-10 w-96 h-96 bg-teal-400/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+
+      <div className="text-center mb-16 relative z-10">
+        <Badge variant="outline" className="mb-4 px-4 py-2 border-green-400/30 bg-green-50/50 dark:bg-green-950/30">
+          <Calendar className="w-4 h-4 mr-2 text-green-600 dark:text-green-400" />
+          <span className="text-green-600 dark:text-green-400 font-semibold">Smart Planning</span>
+        </Badge>
+        <h2 className="text-4xl lg:text-5xl font-black text-foreground mb-4">
+          <span className="gradient-text bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 dark:from-green-400 dark:via-emerald-400 dark:to-teal-400">
+            Farmer's Calendar
+          </span>
+        </h2>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Your complete guide to seasonal farming activities, crop recommendations, and watering schedules
         </p>
       </div>
@@ -220,7 +229,7 @@ const FarmerCalendar: React.FC = () => {
             </Button>
             
             <div className="text-center flex-1">
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">
+              <h3 className="text-2xl font-bold text-foreground mb-2">
                 {months[currentMonth]} 2024
               </h3>
               <div className="flex flex-wrap justify-center gap-2">
@@ -254,7 +263,7 @@ const FarmerCalendar: React.FC = () => {
       <Card className="mb-8">
         <CardContent className="p-6">
           <div className="text-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Select Your Region</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">Select Your Region</h3>
             <div className="flex flex-wrap justify-center gap-3">
               {Object.entries(regions).map(([key, region]) => (
                 <Button
@@ -284,7 +293,7 @@ const FarmerCalendar: React.FC = () => {
               <Card
                 key={key}
                 className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
-                  selectedSeason === key ? season.color : 'bg-white hover:bg-gray-50'
+                  selectedSeason === key ? season.color : 'bg-card hover:bg-accent'
                 }`}
                 onClick={() => {
                   setSelectedSeason(key);
@@ -294,7 +303,7 @@ const FarmerCalendar: React.FC = () => {
                 <CardContent className="p-4 text-center">
                   <Icon className={`w-8 h-8 mx-auto mb-2 ${season.textColor}`} />
                   <h3 className={`font-semibold ${season.textColor}`}>{season.name}</h3>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {season.months.join(', ')}
                   </p>
                 </CardContent>
@@ -328,7 +337,7 @@ const FarmerCalendar: React.FC = () => {
                     {crops.map((crop, index) => (
                       <div
                         key={crop}
-                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 hover:scale-105 transition-all cursor-pointer animate-slide-in border border-gray-200"
+                        className="flex items-center justify-between p-3 bg-card rounded-lg hover:bg-accent hover:scale-105 transition-all cursor-pointer animate-slide-in border"
                         style={{ animationDelay: `${index * 0.1}s` }}
                         onClick={() => handleCropClick(crop)}
                       >
@@ -357,18 +366,18 @@ const FarmerCalendar: React.FC = () => {
           <CardContent className="p-6">
             <div className="space-y-4">
               <div className="animate-pulse-gentle">
-                <h4 className="font-semibold text-gray-700 mb-2">Frequency</h4>
-                <p className="text-blue-600 font-medium">{currentSeason.watering.frequency}</p>
+                <h4 className="font-semibold text-foreground mb-2">Frequency</h4>
+                <p className="text-primary font-medium">{currentSeason.watering.frequency}</p>
               </div>
               
               <div className="animate-pulse-gentle" style={{ animationDelay: '0.2s' }}>
-                <h4 className="font-semibold text-gray-700 mb-2">Amount</h4>
-                <p className="text-blue-600 font-medium">{currentSeason.watering.amount}</p>
+                <h4 className="font-semibold text-foreground mb-2">Amount</h4>
+                <p className="text-primary font-medium">{currentSeason.watering.amount}</p>
               </div>
               
               <div className="animate-pulse-gentle" style={{ animationDelay: '0.4s' }}>
-                <h4 className="font-semibold text-gray-700 mb-2">Pro Tips</h4>
-                <p className="text-gray-600 text-sm">{currentSeason.watering.tips}</p>
+                <h4 className="font-semibold text-foreground mb-2">Pro Tips</h4>
+                <p className="text-muted-foreground text-sm">{currentSeason.watering.tips}</p>
               </div>
             </div>
           </CardContent>
@@ -376,8 +385,8 @@ const FarmerCalendar: React.FC = () => {
 
         {/* Seasonal Activities */}
         <Card className="md:col-span-2">
-          <CardHeader className="bg-orange-50 rounded-t-lg">
-            <CardTitle className="flex items-center text-orange-700">
+          <CardHeader className="bg-orange-50 dark:bg-orange-950/30 rounded-t-lg">
+            <CardTitle className="flex items-center text-orange-700 dark:text-orange-400">
               <TreePine className="w-6 h-6 mr-2" />
               Seasonal Activities
             </CardTitle>
@@ -387,11 +396,11 @@ const FarmerCalendar: React.FC = () => {
               {currentSeason.activities.map((activity, index) => (
                 <div
                   key={activity}
-                  className="flex items-start p-3 bg-orange-50 rounded-lg border-l-4 border-orange-300 animate-slide-in"
+                  className="flex items-start p-3 bg-orange-50 dark:bg-orange-950/20 rounded-lg border-l-4 border-orange-400 dark:border-orange-500 animate-slide-in"
                   style={{ animationDelay: `${index * 0.15}s` }}
                 >
                   <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <span className="text-gray-700">{activity}</span>
+                  <span className="text-foreground font-medium">{activity}</span>
                 </div>
               ))}
             </div>
@@ -400,14 +409,14 @@ const FarmerCalendar: React.FC = () => {
 
         {/* Weather Tips */}
         <Card>
-          <CardHeader className="bg-purple-50 rounded-t-lg">
-            <CardTitle className="flex items-center text-purple-700">
+          <CardHeader className="bg-purple-50 dark:bg-purple-950/30 rounded-t-lg">
+            <CardTitle className="flex items-center text-purple-700 dark:text-purple-400">
               <Sun className="w-6 h-6 mr-2" />
               Weather Tips
             </CardTitle>
           </CardHeader>
           <CardContent className="p-6">
-            <p className="text-gray-700 leading-relaxed animate-fade-in">
+            <p className="text-muted-foreground leading-relaxed animate-fade-in font-medium">
               {currentSeason.weatherTips}
             </p>
           </CardContent>
@@ -417,8 +426,8 @@ const FarmerCalendar: React.FC = () => {
       {/* Regional Insights */}
       <div className="mt-8 grid md:grid-cols-2 gap-6">
         <Card>
-          <CardHeader className="bg-indigo-50 rounded-t-lg">
-            <CardTitle className="flex items-center text-indigo-700">
+          <CardHeader className="bg-indigo-50 dark:bg-indigo-950/30 rounded-t-lg">
+            <CardTitle className="flex items-center text-indigo-700 dark:text-indigo-400">
               <MapPin className="w-6 h-6 mr-2" />
               Regional Insights - {regions[selectedRegion as keyof typeof regions].name}
             </CardTitle>
@@ -426,14 +435,14 @@ const FarmerCalendar: React.FC = () => {
           <CardContent className="p-6">
             <div className="space-y-4">
               <div>
-                <h4 className="font-semibold text-gray-700 mb-2">Climate Type</h4>
-                <Badge variant="outline" className="text-indigo-600 border-indigo-300">
+                <h4 className="font-semibold text-foreground mb-2">Climate Type</h4>
+                <Badge variant="outline" className="text-indigo-600 dark:text-indigo-400 border-indigo-300 dark:border-indigo-700 font-semibold">
                   {currentRegionData.climate}
                 </Badge>
               </div>
               
               <div>
-                <h4 className="font-semibold text-gray-700 mb-2">Specialty Crops</h4>
+                <h4 className="font-semibold text-foreground mb-2">Specialty Crops</h4>
                 <div className="flex flex-wrap gap-2">
                   {currentRegionData.specialCrops.map((crop, index) => (
                     <Badge key={crop} variant="secondary" className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
@@ -444,10 +453,10 @@ const FarmerCalendar: React.FC = () => {
               </div>
 
               <div>
-                <h4 className="font-semibold text-gray-700 mb-2">Common Challenges</h4>
+                <h4 className="font-semibold text-foreground mb-2">Common Challenges</h4>
                 <ul className="space-y-1">
                   {currentRegionData.challenges.map((challenge, index) => (
-                    <li key={challenge} className="flex items-start text-sm text-gray-600 animate-slide-in" style={{ animationDelay: `${index * 0.15}s` }}>
+                    <li key={challenge} className="flex items-start text-sm text-muted-foreground animate-slide-in" style={{ animationDelay: `${index * 0.15}s` }}>
                       <div className="w-2 h-2 bg-red-400 rounded-full mt-2 mr-2"></div>
                       {challenge}
                     </li>
@@ -456,10 +465,10 @@ const FarmerCalendar: React.FC = () => {
               </div>
 
               <div>
-                <h4 className="font-semibold text-gray-700 mb-2">Best Practices</h4>
+                <h4 className="font-semibold text-foreground mb-2">Best Practices</h4>
                 <ul className="space-y-1">
                   {currentRegionData.bestPractices.map((practice, index) => (
-                    <li key={practice} className="flex items-start text-sm text-gray-600 animate-slide-in" style={{ animationDelay: `${index * 0.15}s` }}>
+                    <li key={practice} className="flex items-start text-sm text-muted-foreground animate-slide-in" style={{ animationDelay: `${index * 0.15}s` }}>
                       <div className="w-2 h-2 bg-green-400 rounded-full mt-2 mr-2"></div>
                       {practice}
                     </li>
@@ -472,8 +481,8 @@ const FarmerCalendar: React.FC = () => {
 
         {/* Weather Alerts */}
         <Card>
-          <CardHeader className="bg-red-50 rounded-t-lg">
-            <CardTitle className="flex items-center text-red-700">
+          <CardHeader className="bg-red-50 dark:bg-red-950/30 rounded-t-lg">
+            <CardTitle className="flex items-center text-red-700 dark:text-red-400">
               <Thermometer className="w-6 h-6 mr-2" />
               Weather Alerts & Precautions
             </CardTitle>
@@ -481,15 +490,15 @@ const FarmerCalendar: React.FC = () => {
           <CardContent className="p-6">
             <div className="space-y-4">
               {Object.entries(weatherAlerts).map(([key, alert], index) => (
-                <div key={key} className="p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg animate-bounce-in" style={{ animationDelay: `${index * 0.2}s` }}>
+                <div key={key} className="p-4 bg-yellow-50 dark:bg-yellow-950/20 border-l-4 border-yellow-400 dark:border-yellow-500 rounded-r-lg animate-bounce-in" style={{ animationDelay: `${index * 0.2}s` }}>
                   <div className="flex items-start">
                     <span className="text-2xl mr-3">{alert.icon}</span>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-gray-800 mb-1 capitalize">{key} Alert</h4>
-                      <p className="text-sm text-gray-600 mb-2">{alert.message}</p>
+                      <h4 className="font-semibold text-foreground mb-1 capitalize">{key} Alert</h4>
+                      <p className="text-sm text-muted-foreground mb-2">{alert.message}</p>
                       <div className="flex flex-wrap gap-1">
                         {alert.actions.map((action, actionIndex) => (
-                          <Badge key={actionIndex} variant="outline" className="text-xs">
+                          <Badge key={actionIndex} variant="secondary" className="text-xs bg-primary/10 text-primary border border-primary/20">
                             {action}
                           </Badge>
                         ))}

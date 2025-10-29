@@ -9,14 +9,22 @@ const PlantClassification = () => {
   };
 
   return (
-    <section id="plant-classification" className="py-20 bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-950/20 dark:to-emerald-950/20">
-      <div className="container mx-auto px-6 lg:px-8">
-        <div className="text-center mb-12 animate-fade-in">
-          <Badge variant="outline" className="mb-4">
-            <Leaf className="w-4 h-4 mr-2" />
-            AI Plant Detection
+    <section id="plant-classification" className="py-24 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-green-950/20 dark:via-emerald-950/20 dark:to-teal-950/20 relative overflow-hidden">
+      {/* Background Decoration */}
+      <div className="absolute top-10 right-10 w-80 h-80 bg-green-400/10 rounded-full blur-3xl animate-float"></div>
+      <div className="absolute bottom-10 left-10 w-96 h-96 bg-teal-400/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+
+      <div className="container mx-auto px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-16 animate-fade-in">
+          <Badge variant="outline" className="mb-4 px-4 py-2 border-green-400/30 bg-green-50/50 dark:bg-green-950/30">
+            <Leaf className="w-4 h-4 mr-2 text-green-600 dark:text-green-400" />
+            <span className="text-green-600 dark:text-green-400 font-semibold">AI Plant Detection</span>
           </Badge>
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">Plant Identification</h2>
+          <h2 className="text-4xl lg:text-5xl font-black mb-4">
+            <span className="gradient-text bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 dark:from-green-400 dark:via-emerald-400 dark:to-teal-400">
+              Plant Identification
+            </span>
+          </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Identify any plant species instantly using our advanced AI-powered plant detection system.
             Simply upload an image and get detailed information about the plant.
