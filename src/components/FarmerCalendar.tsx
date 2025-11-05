@@ -230,7 +230,7 @@ const FarmerCalendar: React.FC = () => {
             
             <div className="text-center flex-1">
               <h3 className="text-2xl font-bold text-foreground mb-2">
-                {months[currentMonth]} 2024
+                {months[currentMonth]} 2025
               </h3>
               <div className="flex flex-wrap justify-center gap-2">
                 {monthlyTasks[months[currentMonth] as keyof typeof monthlyTasks]?.map((task, index) => (

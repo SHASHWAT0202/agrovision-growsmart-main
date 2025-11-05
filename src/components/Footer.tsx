@@ -84,12 +84,11 @@ const Footer = () => {
         {/* Bottom Footer */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-muted-foreground text-sm">
-            © 2024 AgroVision. All rights reserved.
+            © 2025 AgroVision. All rights reserved.
           </div>
           
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span>Developed by</span>
-            <span className="font-semibold text-primary">Código Maestro</span>
+            <span>Powered by AI Technology</span>
           </div>
           
           <div className="flex gap-4 text-sm">
