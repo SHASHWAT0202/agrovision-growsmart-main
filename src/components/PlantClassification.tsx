@@ -5,7 +5,7 @@ import { Leaf, ExternalLink, Camera, Sparkles } from "lucide-react";
 
 const PlantClassification = () => {
   const handleRedirectToPlantID = () => {
-    window.open("https://serenitycm.vercel.app", "_blank");
+    window.open("https://plant-identifier-frontend.vercel.app/", "_blank");
   };
 
   return (
