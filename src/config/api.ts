@@ -19,8 +19,8 @@ export const API_CONFIG = {
   // AI Chatbot - Updated to use direct URL with specific endpoint
   CHATBOT: 'https://agri-bot-main.onrender.com/chat/simple',
   
-  // Google Maps API Key (should be in environment variables)
-  GOOGLE_MAPS_API_KEY: env.VITE_GOOGLE_MAPS_API_KEY || 'AIzaSyDkxkBxei5rMKfkIjL7xUFRgz1cMAqdnLQ',
+  // Google Maps API Key (must be set in environment variables)
+  GOOGLE_MAPS_API_KEY: env.VITE_GOOGLE_MAPS_API_KEY || '',
 };
 
 // API helper functions
