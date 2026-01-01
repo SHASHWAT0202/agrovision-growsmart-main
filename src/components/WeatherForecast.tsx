@@ -5,6 +5,8 @@ import { Cloud, CloudRain, Sun, Wind, Droplets, Thermometer, MapPin, RefreshCw }
 import { useState, useEffect } from "react";
 import { API_CONFIG, buildApiUrl } from "@/config/api";
 import { useToast } from "@/hooks/use-toast";
+import { WeatherSkeleton } from "@/components/ui/skeleton-loader";
+import { motion } from "framer-motion";
 
 interface WeatherData {
   date: string;
@@ -154,62 +156,66 @@ const WeatherForecast = () => {
         </div>
         
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4">
-            {Array(7).fill(0).map((_, i) => (
-              <Card key={i} className="animate-pulse">
-                <CardContent className="p-6">
-                  <div className="h-20 bg-muted rounded-md"></div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <WeatherSkeleton />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4 animate-scale-in">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4">
             {weatherData.map((day, index) => (
-              <Card key={index} className="bg-gradient-card shadow-card border-0 hover:shadow-glow transition-all duration-300 group">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-center">{day.date}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* Weather Icon & Temperature */}
-                  <div className="text-center space-y-2">
-                    <div className="flex justify-center group-hover:scale-110 transition-transform">
-                      {getWeatherIcon(day.condition)}
-                    </div>
-                    <div className="flex items-center justify-center gap-1">
-                      <Thermometer className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-lg font-bold">{day.temperature}°C</span>
-                    </div>
-                  </div>
-                  
-                  {/* Weather Details */}
-                  <div className="space-y-2 text-xs">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <Droplets className="h-3 w-3 text-secondary" />
-                        <span>Humidity</span>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, type: "spring", stiffness: 100 }}
+                whileHover={{ y: -8, transition: { duration: 0.2 } }}
+              >
+                <Card className="bg-gradient-card shadow-card border-0 hover:shadow-glow transition-all duration-300 group cursor-pointer h-full">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-medium text-center">{day.date}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {/* Weather Icon & Temperature */}
+                    <div className="text-center space-y-2">
+                      <motion.div 
+                        className="flex justify-center"
+                        whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {getWeatherIcon(day.condition)}
+                      </motion.div>
+                      <div className="flex items-center justify-center gap-1">
+                        <Thermometer className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-lg font-bold">{day.temperature}°C</span>
                       </div>
-                      <span className="font-medium">{day.humidity}%</span>
                     </div>
                     
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <CloudRain className="h-3 w-3 text-primary" />
-                        <span>Rain</span>
+                    {/* Weather Details */}
+                    <div className="space-y-2 text-xs">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1">
+                          <Droplets className="h-3 w-3 text-secondary" />
+                          <span>Humidity</span>
+                        </div>
+                        <span className="font-medium">{day.humidity}%</span>
                       </div>
-                      <span className="font-medium">{day.rainfall}mm</span>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <Wind className="h-3 w-3 text-accent" />
-                        <span>Wind</span>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1">
+                          <CloudRain className="h-3 w-3 text-primary" />
+                          <span>Rain</span>
+                        </div>
+                        <span className="font-medium">{day.rainfall}mm</span>
                       </div>
-                      <span className="font-medium">{day.windSpeed}km/h</span>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1">
+                          <Wind className="h-3 w-3 text-accent" />
+                          <span>Wind</span>
+                        </div>
+                        <span className="font-medium">{day.windSpeed}km/h</span>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
         )}
